@@ -3,14 +3,38 @@
   <head>
     <link rel='stylesheet' type='css' href='styles.css'>
   </head>
+  <script src="lib/lodash.js" charset="utf-8"></script>
   <body>
     <div class="scoreboard">
       <!-- Modify the scoreboard when important events occur in your game! -->
       <div class="high">High score: <span>0</span></div>
       <div class="current">Current score: <span>0</span></div>
       <div class="collisions">Collisions: <span>0</span></div>
+      <div class="container"></div>
     </div>
-    <script src="lib/d3.js" charset="utf-8"></script>
-    <script src='watchout.js'></script>
-  </body>
+  <script src="lib/d3.js" charset="utf-8"></script>
+  <script src='watchout.js'></script>
+<style>
+
+text {
+  font: bold 48px monospace;
+}
+
+.enter {
+  fill: green;
+}
+
+.update {
+  fill: #333;
+}
+
+.svg {
+}
+
+.container{
+  border: 10px;
+  background-color: grey;
+}
+</style>
+</body>
 </html>

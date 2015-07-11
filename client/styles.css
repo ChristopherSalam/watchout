@@ -3,3 +3,23 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+.dot circle {
+	fill: yellow;
+	stroke: blue;
+	stroke-width: 1px;
+}
+
+.dot circle.dragging {
+	fill: red;
+	stroke: brown;
+	stroke-width: 1px;
+}
+
+.axis line {
+	fill:none;
+	stroke: #ddd;
+	shade-rendering: crispEdges;
+	vector-effect: non-scaling-stroke;
+
+}
+
