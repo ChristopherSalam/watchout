@@ -1,10 +1,7 @@
 /* Basic requirements:
- Make a differently-colored dot to represent the player. Make it draggable.
  Detect when a enemy touches you.
  Keep track of the user's score, and display it.
- Use css3 animations to make the enemies whirling shuriken.
 */
-var dragended, dragstarted, dragged;
 var body = d3.select("body")
 //this is the dimensions of the gameboard
 var svgContainer = d3.select("body").append("svg")
@@ -22,23 +19,67 @@ function dragstarted(d){
 }
 
 function dragged(d){
+	var radius = 50;
+	
 	d3.select(this)
-		// .attr("cx", function(d){return d;})
-		// .attr("cy", function(d){return d;})
+// the event was triggered here by modifying d3.event.d.x to d3.event.x
 		.attr('cx',d.x = d3.event.x)
 		.attr('cy',d.y = d3.event.y)
-	}
+		// .attr('r',d.r = d3.event.r)
+		// console.log('x & y of player',d3.event.x,d3.event.y,100);
+		// console.log('x and y of enemies',
+		// // // can not determine individual dot information for each enemy	
+		//  	d3.select(".enemies").attr("cx"),
+		//  	d3.select(".enemies").attr("cy"),
+		//  	d3.select(".enemies").attr("r")
+		//  );
+		//console.log("secondball",d3.select(".enemies").attr("r"));
+	// var collision = function () {
+		console.log('d3.event ', d3.event);		
 
+		// console.log('if statement ', 
+		// d3.select(".enemies").attr("cx") + radius + d3.select(".enemies").attr("r") );
+			// + radius + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cx") 
+			// 	&& d3.event.x < d3.select(".enemies").attr("cx") + radius + d3.select(".enemies").attr("r")
+			// 	&& d3.event.y + radius + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cy")
+			// 	&& d3.event.y < d3.select(".enemies").attr("cy") + radius + d3.select(".enemies").attr("r"))
+
+
+		if ((d3.event.x + radius + d3.select(".enemies").attr("r")) > (d3.select(".enemies").attr("cx")) 
+				&& (d3.event.x) < (d3.select(".enemies").attr("cx") + radius + d3.select(".enemies").attr("r"))
+				&& (d3.event.y + radius + d3.select(".enemies").attr("r")) > (d3.select(".enemies").attr("cy"))
+				&& (d3.event.y) < (d3.select(".enemies").attr("cy") + radius + d3.select(".enemies").attr("r")))
+		// if (d3.event.x + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cx") 
+		// 		&& d3.event.x < d3.select(".enemies").attr("cx") + d3.event.r + d3.select(".enemies").attr("r")
+		// 		&& d3.event.y + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cy")
+		// 		&& d3.event.y < d3.select(".enemies").attr("cy") + d3.event.r + d3.select(".enemies").attr("r"))
+		{
+			console.log("pin point collision");
+		}
+
+
+	// }
+	// collision();
+		
+}
 
 function dragended(d){
 	d3.select(this).classed('dragging',false)
 }
 
+// var collision = function () {
+// 	if (d3.event.x + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cx") 
+// 			&& d3.event.x < d3.select(".enemies").attr("cx") + d3.event.r + d3.select(".enemies").attr("r")
+// 			&& d3.event.y + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cy")
+// 			&& d3.event.y < d3.select(".enemies").attr("cy") + d3.event.r + d3.select(".enemies").attr("r")){
+// 		console.log("COLLISIONNNNNNNNNNNNNNN");
+// 	}
+// }
 
 var createEnemies = function(){
 	var enemyArray = [];	
-	for(var i = 0; i < 30; i++){
-		//this number is positioning
+	for(var i = 0; i < 2; i++){
+	//this number is positioning
 		enemyArray.push(600);
 	}
 	//creating the existance of the circles, and appends them to the DOM
@@ -50,10 +91,18 @@ var createEnemies = function(){
 	var circleAttributes = circles
 		.attr("cx", function(d){return d;})
 		.attr("cy", function(d){return d;})
-		.attr("r", 10) /*this is the radius of the enemy circles*/
+		.attr("r", 100) /*this is the radius of the enemy circles*/
 		.style("fill", "black")
-		.attr("class", "enemies");                        
+		.attr("class", "enemies");
+		
+		// console.log('x and y of enemies',
+		// // can not determine individual dot information for each enemy	
+		// 	d3.select(".enemies").attr("cx"),
+		// 	d3.select(".enemies").attr("cy")
+		// );                  
 };
+
+
 
 
 var player = function(){
@@ -67,34 +116,35 @@ var player = function(){
 		.attr("cx", function(d){return d;})
 		.attr("cy", function(d){return d;})
 		.attr("class","draggableCircle")
-		.attr("r", 10) 
+		.attr("r", 100) 
 		.style("fill", "red")
 		.call(drag);                        
-
-
-
-	//circles.on("", function(){})
-
-	//var draggableCircle = svgContainer.selectAll("draggableCircle");
-
-	//circles.on("click", function() {
-  	// if (d3.event.defaultPrevented) return; // click suppressed
-  	// console.log("clicked!");
-//});	
-
 };
 
 var transitions = function(){
 //this moves the circles from their current location to a new location over a specificed amount of time
+		// console.log('x and y of enemies',
+		// // can not determine individual dot information for each enemy	
+		// 	d3.select(".enemies").attr("cx"),
+		// 	d3.select(".enemies").attr("cy")
+		// );
+
 	d3.selectAll(".enemies").transition()
 		.attr("cx", function(d){return d * Math.random() * 1.7;})
 		.attr("cy", function(d){return d * Math.random();})
-		.duration(500)
-		//.delay()
-		// .each("end", "repeat");
+		.duration(1000)
+
+		//additionally, our data is delayed one step. 
+
+		//console.log('x and y of enemies',
+			//d3.select(".enemies")
+		//);
 };
 
+// this triggers the single red player
 player();
+// 
 createEnemies();
-//transitions();
-setInterval(transitions, 1000);
+transitions(); // this is a one time function for debugging
+//setInterval(transitions, 2000);
+//setInterval(collision, 2000);
