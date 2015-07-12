@@ -20,67 +20,25 @@ function dragstarted(d){
 
 function dragged(d){
 	var radius = 50;
-	
 	d3.select(this)
-// the event was triggered here by modifying d3.event.d.x to d3.event.x
 		.attr('cx',d.x = d3.event.x)
 		.attr('cy',d.y = d3.event.y)
-		// .attr('r',d.r = d3.event.r)
-		// console.log('x & y of player',d3.event.x,d3.event.y,100);
-		// console.log('x and y of enemies',
-		// // // can not determine individual dot information for each enemy	
-		//  	d3.select(".enemies").attr("cx"),
-		//  	d3.select(".enemies").attr("cy"),
-		//  	d3.select(".enemies").attr("r")
-		//  );
-		//console.log("secondball",d3.select(".enemies").attr("r"));
-	// var collision = function () {
-		console.log('d3.event ', d3.event);		
-
-		// console.log('if statement ', 
-		// d3.select(".enemies").attr("cx") + radius + d3.select(".enemies").attr("r") );
-			// + radius + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cx") 
-			// 	&& d3.event.x < d3.select(".enemies").attr("cx") + radius + d3.select(".enemies").attr("r")
-			// 	&& d3.event.y + radius + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cy")
-			// 	&& d3.event.y < d3.select(".enemies").attr("cy") + radius + d3.select(".enemies").attr("r"))
-
-
-		if ((d3.event.x + radius + d3.select(".enemies").attr("r")) > (d3.select(".enemies").attr("cx")) 
-				&& (d3.event.x) < (d3.select(".enemies").attr("cx") + radius + d3.select(".enemies").attr("r"))
-				&& (d3.event.y + radius + d3.select(".enemies").attr("r")) > (d3.select(".enemies").attr("cy"))
-				&& (d3.event.y) < (d3.select(".enemies").attr("cy") + radius + d3.select(".enemies").attr("r")))
-		// if (d3.event.x + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cx") 
-		// 		&& d3.event.x < d3.select(".enemies").attr("cx") + d3.event.r + d3.select(".enemies").attr("r")
-		// 		&& d3.event.y + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cy")
-		// 		&& d3.event.y < d3.select(".enemies").attr("cy") + d3.event.r + d3.select(".enemies").attr("r"))
-		{
-			console.log("pin point collision");
-		}
-
-
-	// }
-	// collision();
-		
+	if ((d3.event.x + radius + d3.select(".enemies").attr("r")) > (d3.select(".enemies").attr("cx")) 
+		&& (d3.event.x) < (d3.select(".enemies").attr("cx") + radius + d3.select(".enemies").attr("r"))
+		&& (d3.event.y + radius + d3.select(".enemies").attr("r")) > (d3.select(".enemies").attr("cy"))
+		&& (d3.event.y) < (d3.select(".enemies").attr("cy") + radius + d3.select(".enemies").attr("r")))
+		{console.log("pin point collision");}
 }
 
 function dragended(d){
 	d3.select(this).classed('dragging',false)
 }
 
-// var collision = function () {
-// 	if (d3.event.x + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cx") 
-// 			&& d3.event.x < d3.select(".enemies").attr("cx") + d3.event.r + d3.select(".enemies").attr("r")
-// 			&& d3.event.y + d3.event.r + d3.select(".enemies").attr("r") > d3.select(".enemies").attr("cy")
-// 			&& d3.event.y < d3.select(".enemies").attr("cy") + d3.event.r + d3.select(".enemies").attr("r")){
-// 		console.log("COLLISIONNNNNNNNNNNNNNN");
-// 	}
-// }
-
 var createEnemies = function(){
 	var enemyArray = [];	
-	for(var i = 0; i < 2; i++){
+	for(var i = 0; i < 30; i++){
 	//this number is positioning
-		enemyArray.push(600);
+		enemyArray.push(300);
 	}
 	//creating the existance of the circles, and appends them to the DOM
 	var circles = svgContainer.selectAll("circle")
@@ -91,24 +49,16 @@ var createEnemies = function(){
 	var circleAttributes = circles
 		.attr("cx", function(d){return d;})
 		.attr("cy", function(d){return d;})
-		.attr("r", 100) /*this is the radius of the enemy circles*/
+		.attr("r", 5) /*this is the radius of the enemy circles*/
 		.style("fill", "black")
-		.attr("class", "enemies");
-		
-		// console.log('x and y of enemies',
-		// // can not determine individual dot information for each enemy	
-		// 	d3.select(".enemies").attr("cx"),
-		// 	d3.select(".enemies").attr("cy")
-		// );                  
+		.attr("class", "enemies");              
+
 };
-
-
-
 
 var player = function(){
 	//creating the existance of the circles, and appends them to the DOM
 	var circles = svgContainer.selectAll("circle")
-		.data([600])
+		.data([300])
 		.enter()
 		.append("circle");
 	//this styles the circles and give them a position
@@ -116,35 +66,32 @@ var player = function(){
 		.attr("cx", function(d){return d;})
 		.attr("cy", function(d){return d;})
 		.attr("class","draggableCircle")
-		.attr("r", 100) 
-		.style("fill", "red")
+		.attr("r", 5) 
+		.style("fill", "#9900cc")
 		.call(drag);                        
 };
 
-var transitions = function(){
-//this moves the circles from their current location to a new location over a specificed amount of time
-		// console.log('x and y of enemies',
-		// // can not determine individual dot information for each enemy	
-		// 	d3.select(".enemies").attr("cx"),
-		// 	d3.select(".enemies").attr("cy")
-		// );
+	var count = 0
 
+var transitions = function(){
+    count++; 
 	d3.selectAll(".enemies").transition()
-		.attr("cx", function(d){return d * Math.random() * 1.7;})
-		.attr("cy", function(d){return d * Math.random();})
+		.attr("cx", function(d){return d * Math.random()*2; })
+		.attr("cy", function(d){return d * Math.random(); })
+		// .attr("cx", function(d,i){return d*.01*i*count})
+		// .attr("cy", function(d,i){return d*.01*i*count})
+		.ease('back')
+		.styleTween("color", function() { return d3.interpolate("blue", "#aaa"); })
 		.duration(1000)
 
-		//additionally, our data is delayed one step. 
-
-		//console.log('x and y of enemies',
-			//d3.select(".enemies")
-		//);
+	d3.selectAll(".enemies:nth-child(2n)").style("fill","#DD0048")
+	d3.selectAll(".enemies:nth-child(3n)").style("fill","#32cd32")
 };
 
 // this triggers the single red player
 player();
 // 
 createEnemies();
-transitions(); // this is a one time function for debugging
-//setInterval(transitions, 2000);
+//transitions(); // this is a one time function for debugging
+setInterval(transitions, 2000);
 //setInterval(collision, 2000);
